@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_INITDB_ARGS: --auth-host=md5 --auth-local=trust
+      POSTGRES_DB: turngo-db
+      POSTGRES_USER: turngo-user
+      POSTGRES_PASSWORD: turngo-pass
+    healthcheck:
+      # Prueba de salud para el contenedor
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+    ports:
+      - 5333:5432
+
+# Docker compose básico para crear una db Postgres en el puerto 5333 local. Los nombres de environment si podrian agregarse a un .env.db
