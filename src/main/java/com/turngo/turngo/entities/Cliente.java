@@ -1,12 +1,14 @@
 package com.turngo.turngo.entities;
 
 import jakarta.persistence.*;
-
+import lombok.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity()
 @Table(name = "Clientes")
+@Getter
+@Setter
 public class Cliente implements Serializable {
 
     @Id
