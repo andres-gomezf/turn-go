@@ -1,4 +1,9 @@
 package com.turngo.turngo.repositories;
 
-public interface ClienteRepository {
+import com.turngo.turngo.entities.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 }

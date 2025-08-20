@@ -1,4 +1,9 @@
 package com.turngo.turngo.repositories;
 
-public interface CanchaRepository {
+import com.turngo.turngo.entities.Cancha;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CanchaRepository extends JpaRepository<Cancha, Long> {
 }
