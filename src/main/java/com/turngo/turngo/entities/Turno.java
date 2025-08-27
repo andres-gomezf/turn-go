@@ -1,10 +1,14 @@
 package com.turngo.turngo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Turnos")
 public class Turno implements Serializable {
@@ -22,9 +26,13 @@ public class Turno implements Serializable {
     @JoinColumn(name = "cancha_id")
     private Cancha cancha;
 
-    @Column(name = "fecha_hora_inicio")
-    private LocalDateTime fechaInicio;
+    @ManyToOne(optional = false)
+    private Horario horario;
 
-    @Column(name = "fecha_hora_fin")
-    private LocalDateTime fechaFin;
+    @Column(name = "fecha")
+    private LocalDate fechaInicio;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoReserva estado;
 }
