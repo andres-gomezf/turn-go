@@ -11,6 +11,13 @@ import java.util.List;
 @Setter
 public class Cliente implements Serializable {
 
+    public Cliente(Long id, String nombre, String apellido, String correo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

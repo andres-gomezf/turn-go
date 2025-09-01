@@ -6,6 +6,7 @@ import com.turngo.turngo.services.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -20,7 +21,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ClienteController.class)
+
+@WebMvcTest(controllers = ClienteController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ClienteControllerTest {
 
     @Autowired
@@ -36,8 +39,8 @@ class ClienteControllerTest {
     void shouldGetAllClients() throws Exception {
         // Given
         List<Cliente> clientes = Arrays.asList(
-                new Cliente(1L, "Juan Pérez", "juan@email.com", "123456789"),
-                new Cliente(2L, "María García", "maria@email.com", "987654321")
+                new Cliente(1L, "Juan", "Pérez", "juan@email.com"),
+                new Cliente(2L, "María", "García", "maria@email.com")
         );
 
         when(clienteService.findAll()).thenReturn(clientes);
@@ -47,9 +50,11 @@ class ClienteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].nombre").value("Juan Pérez"))
-                .andExpect(jsonPath("$[0].email").value("juan@email.com"))
-                .andExpect(jsonPath("$[1].nombre").value("María García"));
+                .andExpect(jsonPath("$[0].nombre").value("Juan"))
+                .andExpect(jsonPath("$[0].apellido").value("Pérez"))
+                .andExpect(jsonPath("$[0].correo").value("juan@email.com"))
+                .andExpect(jsonPath("$[1].nombre").value("María"))
+                .andExpect(jsonPath("$[1].apellido").value("García"));
 
         verify(clienteService, times(1)).findAll();
     }
@@ -57,7 +62,7 @@ class ClienteControllerTest {
     @Test
     void shouldGetClientById() throws Exception {
         // Given
-        Cliente cliente = new Cliente(1L, "Juan Pérez", "juan@email.com", "123456789");
+        Cliente cliente = new Cliente(1L, "Juan", "Pérez", "juan@email.com");
         when(clienteService.findById(1L)).thenReturn(Optional.of(cliente));
 
         // When & Then
@@ -65,8 +70,9 @@ class ClienteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.nombre").value("Juan Pérez"))
-                .andExpect(jsonPath("$.email").value("juan@email.com"));
+                .andExpect(jsonPath("$.nombre").value("Juan"))
+                .andExpect(jsonPath("$.apellido").value("Pérez"))
+                .andExpect(jsonPath("$.correo").value("juan@email.com"));
 
         verify(clienteService, times(1)).findById(1L);
     }
@@ -87,8 +93,8 @@ class ClienteControllerTest {
     @Test
     void shouldCreateNewClient() throws Exception {
         // Given
-        Cliente clienteRequest = new Cliente(null, "Ana López", "ana@email.com", "555123456");
-        Cliente clienteResponse = new Cliente(3L, "Ana López", "ana@email.com", "555123456");
+        Cliente clienteRequest = new Cliente(null, "Ana", "López", "ana@email.com");
+        Cliente clienteResponse = new Cliente(3L, "Ana", "López", "ana@email.com");
 
         when(clienteService.save(any(Cliente.class))).thenReturn(clienteResponse);
 
@@ -98,17 +104,18 @@ class ClienteControllerTest {
                         .content(objectMapper.writeValueAsString(clienteRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(3))
-                .andExpect(jsonPath("$.nombre").value("Ana López"))
-                .andExpect(jsonPath("$.email").value("ana@email.com"));
+                .andExpect(jsonPath("$.nombre").value("Ana"))
+                .andExpect(jsonPath("$.apellido").value("López"))
+                .andExpect(jsonPath("$.correo").value("ana@email.com"));
 
         verify(clienteService, times(1)).save(any(Cliente.class));
     }
-
+/* Actualmente no tenemos /PUT
     @Test
     void shouldUpdateClient() throws Exception {
         // Given
-        Cliente clienteExistente = new Cliente(1L, "Juan Pérez", "juan@email.com", "123456789");
-        Cliente clienteActualizado = new Cliente(1L, "Juan Carlos Pérez", "juancarlos@email.com", "123456789");
+        Cliente clienteExistente = new Cliente(1L, "Juan", "Pérez", "juan@email.com");
+        Cliente clienteActualizado = new Cliente(1L, "Juan Carlos","Pérez", "juancarlos@email.com");
 
         when(clienteService.findById(1L)).thenReturn(Optional.of(clienteExistente));
         when(clienteService.save(any(Cliente.class))).thenReturn(clienteActualizado);
@@ -118,17 +125,18 @@ class ClienteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clienteActualizado)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Juan Carlos Pérez"))
-                .andExpect(jsonPath("$.email").value("juancarlos@email.com"));
+                .andExpect(jsonPath("$.nombre").value("Juan Carlos"))
+                .andExpect(jsonPath("$.apellido").value("Pérez"))
+                .andExpect(jsonPath("$.correo").value("juancarlos@email.com"));
 
         verify(clienteService, times(1)).findById(1L);
         verify(clienteService, times(1)).save(any(Cliente.class));
     }
-
+*/
     @Test
     void shouldDeleteClient() throws Exception {
         // Given
-        when(clienteService.findById(1L)).thenReturn(Optional.of(new Cliente(1L, "Juan Pérez", "juan@email.com", "123456789")));
+        when(clienteService.findById(1L)).thenReturn(Optional.of(new Cliente(1L, "Juan", "Pérez", "juan@email.com")));
         doNothing().when(clienteService).delete(1L);
 
         // When & Then
@@ -140,7 +148,7 @@ class ClienteControllerTest {
 
     @Test
     void shouldReturnBadRequestForInvalidData() throws Exception {
-        // Given - Client without name (assuming it's required)
+        // Given - Client without name
         Cliente clienteInvalido = new Cliente(null, "", "invalid-email", "123");
 
         // When & Then
