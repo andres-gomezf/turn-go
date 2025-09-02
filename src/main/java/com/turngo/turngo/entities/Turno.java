@@ -22,7 +22,7 @@ public class Turno implements Serializable {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "cancha_id")
     private Cancha cancha;
 

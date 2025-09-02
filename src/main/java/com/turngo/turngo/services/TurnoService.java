@@ -13,6 +13,10 @@ public class TurnoService {
 
     @Autowired
     private TurnoRepository turnoRepository;
+    @Autowired
+    private CanchaService canchaService;
+    @Autowired
+    private ClienteService clienteService;
 
     public List<Turno> findAll() {
         return turnoRepository.findAll();
@@ -23,7 +27,17 @@ public class TurnoService {
     }
 
     public Turno save(Turno turno) {
-        return turnoRepository.save(turno);
+        Turno savedTurno = turnoRepository.save(turno);
+
+        savedTurno.setCancha(
+                canchaService.findById(turno.getCancha().getId()).orElseThrow(() -> new RuntimeException("Cancha no encontrada"))
+        );
+
+        savedTurno.setCliente(
+                clienteService.findById(turno.getCliente().getId()).orElseThrow(() -> new RuntimeException("Cliente no encontrado"))
+        );
+
+        return savedTurno;
     }
 
     public void delete(Long id) {

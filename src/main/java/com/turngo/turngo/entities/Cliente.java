@@ -1,5 +1,6 @@
 package com.turngo.turngo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
@@ -35,5 +36,6 @@ public class Cliente implements Serializable {
     private String correo;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
     private List<Turno> turnos;
 }

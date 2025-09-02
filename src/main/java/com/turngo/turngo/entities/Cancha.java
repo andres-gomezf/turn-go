@@ -1,5 +1,6 @@
 package com.turngo.turngo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,6 @@ public class Cancha implements Serializable {
     private Integer numero;
 
     @OneToMany(mappedBy = "cancha")
+    @JsonIgnore
     private List<Turno> turnos;
 }

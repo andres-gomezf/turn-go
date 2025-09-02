@@ -1,6 +1,7 @@
 package com.turngo.turngo.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Horario {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     @JoinColumn(name = "cancha_id")
     private Cancha cancha;
 
