@@ -1,6 +1,7 @@
 package com.turngo.turngo;
 
 import com.turngo.turngo.controllers.ClienteController;
+import com.turngo.turngo.dtos.ClienteDto;
 import com.turngo.turngo.entities.Cliente;
 import com.turngo.turngo.services.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,10 +94,10 @@ class ClienteControllerTest {
     @Test
     void shouldCreateNewClient() throws Exception {
         // Given
-        Cliente clienteRequest = new Cliente(null, "Ana", "López", "ana@email.com");
+        ClienteDto clienteRequest = new ClienteDto("Ana", "López", "ana@email.com");
         Cliente clienteResponse = new Cliente(3L, "Ana", "López", "ana@email.com");
 
-        when(clienteService.save(any(Cliente.class))).thenReturn(clienteResponse);
+        when(clienteService.save(any(ClienteDto.class))).thenReturn(clienteResponse);
 
         // When & Then
         mockMvc.perform(post("/api/v1/clientes")
@@ -108,7 +109,7 @@ class ClienteControllerTest {
                 .andExpect(jsonPath("$.apellido").value("López"))
                 .andExpect(jsonPath("$.correo").value("ana@email.com"));
 
-        verify(clienteService, times(1)).save(any(Cliente.class));
+        verify(clienteService, times(1)).save(any(ClienteDto.class));
     }
 /* Actualmente no tenemos /PUT
     @Test
@@ -149,15 +150,15 @@ class ClienteControllerTest {
     @Test
     void shouldReturnBadRequestForInvalidData() throws Exception {
         // Given - Client without name
-        Cliente clienteInvalido = new Cliente(null, "", "invalid-email", "123");
+        ClienteDto clienteDto = new ClienteDto("", "123", "invalid-mail.com");
 
         // When & Then
         mockMvc.perform(post("/api/v1/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clienteInvalido)))
+                        .content(objectMapper.writeValueAsString(clienteDto)))
                 .andExpect(status().isBadRequest());
 
-        verify(clienteService, never()).save(any(Cliente.class));
+        verify(clienteService, never()).save(any(ClienteDto.class));
     }
 
     @Test
