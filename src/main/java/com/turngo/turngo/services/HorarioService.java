@@ -18,7 +18,7 @@ public class HorarioService {
         return horarioRepository.findAll();
     }
 
-    public Optional<Horario> findById(Long id) {
+    public Optional<Horario> findById(Integer id) {
         return horarioRepository.findById(id);
     }
 
@@ -26,7 +26,7 @@ public class HorarioService {
         return horarioRepository.save(horario);
     }
 
-    public void delete(Long id) {
+    public void delete(Integer id) {
         horarioRepository.deleteById(id);
     }
 }

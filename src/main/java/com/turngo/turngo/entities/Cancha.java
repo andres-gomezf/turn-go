@@ -21,8 +21,4 @@ public class Cancha implements Serializable {
 
     @Column(name = "numero_cancha", unique = true)
     private Integer numero;
-
-    @OneToMany(mappedBy = "cancha")
-    @JsonIgnore
-    private List<Turno> turnos;
 }

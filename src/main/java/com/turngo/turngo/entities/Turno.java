@@ -7,11 +7,20 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "turnos")
 @Getter
 @Setter
+@Entity
+@Table(name = "Turnos")
 public class Turno implements Serializable {
+
+    public Turno() {}
+
+    public Turno(Cliente cliente, Horario horario, LocalDate fechaInicio, EstadoReserva estado) {
+        this.cliente = cliente;
+        this.horario = horario;
+        this.fechaInicio = fechaInicio;
+        this.estado = estado;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +30,6 @@ public class Turno implements Serializable {
     @ManyToOne(optional = true)  // Al tener optional, un turno puede o no tener un cliente para ser creado.
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cancha_id")
-    private Cancha cancha;
 
     @ManyToOne(optional = false)
     private Horario horario;

@@ -1,5 +1,6 @@
 package com.turngo.turngo.controllers;
 
+import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.services.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> create(@RequestBody Turno turno) {
+    public ResponseEntity<Turno> create(@RequestBody TurnoDto turno) {
         Turno nuevo = turnoService.save(turno);
         return ResponseEntity.status(201).body(nuevo);
     }

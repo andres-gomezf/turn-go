@@ -22,7 +22,7 @@ public class HorarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Horario> getById(@PathVariable Long id) {
+    public ResponseEntity<Horario> getById(@PathVariable Integer id) {
         return horarioService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -35,7 +35,7 @@ public class HorarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         if (horarioService.findById(id).isPresent()) {
             horarioService.delete(id);
             return ResponseEntity.noContent().build();
