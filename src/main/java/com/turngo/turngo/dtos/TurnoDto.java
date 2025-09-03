@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 public class TurnoDto {
 
+    // TODO: Agregar validaciones como en ClienteDto
     private Long clienteId;
     private Long canchaId;
     private Integer horarioId;
