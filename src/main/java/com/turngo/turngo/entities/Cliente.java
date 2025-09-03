@@ -2,6 +2,7 @@ package com.turngo.turngo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.io.Serializable;
 import java.util.List;
@@ -12,8 +13,16 @@ import java.util.List;
 @Setter
 public class Cliente implements Serializable {
 
+    public Cliente(){}
+
     public Cliente(Long id, String nombre, String apellido, String correo) {
         this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+    }
+
+    public Cliente(String nombre, String apellido, String correo) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -25,10 +34,11 @@ public class Cliente implements Serializable {
     private Long id;
 
     @Column(name = "nombre")
+    @NotBlank
     private String nombre;
 
     @Column(name = "apellido")
-    @Basic(optional = true)
+    @NotBlank
     private String apellido;
 
     @Column(name = "correo")
