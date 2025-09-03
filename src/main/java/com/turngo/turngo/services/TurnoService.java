@@ -2,6 +2,7 @@ package com.turngo.turngo.services;
 
 import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.*;
+import com.turngo.turngo.exceptions.TurnoNoDisponibleException;
 import com.turngo.turngo.repositories.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class TurnoService {
                     .orElseThrow(() -> new RuntimeException("Horario no encontrado"));
 
             if (!esAlquilable(horario, turnoDto.getFecha())) {
-                throw new RuntimeException("El turno ya está ocupado");
+                throw new TurnoNoDisponibleException("El turno ya está ocupado");
             }
 
             Turno turno = new Turno(cliente, horario, turnoDto.getFecha(), EstadoReserva.PENDIENTE);

@@ -1,5 +1,6 @@
 package com.turngo.turngo.services;
 
+import com.turngo.turngo.dtos.ClienteDto;
 import com.turngo.turngo.entities.Cliente;
 import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.repositories.ClienteRepository;
@@ -23,8 +24,11 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public Cliente save(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public Cliente save(ClienteDto cliente) {
+
+        Cliente nuevoCliente = new Cliente(cliente.getNombre(), cliente.getApellido(), cliente.getCorreo());
+
+        return clienteRepository.save(nuevoCliente);
     }
 
     public void delete(Long id) {
