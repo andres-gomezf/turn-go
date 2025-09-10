@@ -48,4 +48,7 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
     private List<Turno> turnos;
+
+    @Column(name = "user_id")
+    private Long userId;
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -19,9 +20,15 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAll() {
-        List<Cliente> clientes = clienteService.findAll();
-        return ResponseEntity.ok(clientes);
+    public ResponseEntity<List<Cliente>> getAll(@RequestParam(required = false, name = "email") String email) {
+
+        if (email == null) {
+            List<Cliente> clientes = clienteService.findAll();
+            return ResponseEntity.ok(clientes);
+        }
+
+        List<Cliente> cliente = clienteService.findByEmail(email);
+        return ResponseEntity.ok(cliente);
     }
 
     @GetMapping("/{id}")

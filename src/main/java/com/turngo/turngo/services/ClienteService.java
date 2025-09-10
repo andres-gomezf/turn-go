@@ -34,4 +34,8 @@ public class ClienteService {
     public void delete(Long id) {
         clienteRepository.deleteById(id);
     }
+
+    public List<Cliente> findByEmail(String email) {
+        return clienteRepository.findByCorreo(email);
+    }
 }
