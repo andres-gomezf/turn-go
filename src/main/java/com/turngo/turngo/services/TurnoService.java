@@ -1,15 +1,22 @@
 package com.turngo.turngo.services;
 
+import com.turngo.turngo.dtos.CanchaConHorariosDto;
+import com.turngo.turngo.dtos.HorarioDto;
+import com.turngo.turngo.dtos.HorarioFlatDto;
 import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.*;
 import com.turngo.turngo.exceptions.TurnoNoDisponibleException;
 import com.turngo.turngo.repositories.TurnoRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TurnoService {
@@ -56,5 +63,29 @@ public class TurnoService {
         return this.findAll().stream().noneMatch(
                 turno -> turno.getHorario().equals(horario) &&
                 turno.getFechaInicio().equals(fecha));
+    }
+
+    public List<CanchaConHorariosDto> findAvailableByDate(LocalDate fecha) {
+        List<HorarioFlatDto> filas = turnoRepository.findAvailableByDate(fecha);
+
+        return filas.stream()
+                .collect(Collectors.groupingBy(
+                        f -> new CanchaConHorariosDto(
+                                f.getCanchaId(),
+                                f.getNumeroCancha(),
+                                new ArrayList<>()
+                        ),
+                        Collectors.mapping(
+                                f -> new HorarioDto(f.getHorarioId(), f.getHoraInicio(), f.getHoraFin()),
+                                Collectors.toList()
+                        )
+                ))
+                .entrySet().stream()
+                .map(e -> new CanchaConHorariosDto(
+                        e.getKey().canchaId(),
+                        e.getKey().numeroCancha(),
+                        e.getValue()
+                ))
+                .toList();
     }
 }

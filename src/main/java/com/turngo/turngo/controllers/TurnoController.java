@@ -1,12 +1,15 @@
 package com.turngo.turngo.controllers;
 
+import com.turngo.turngo.dtos.CanchaConHorariosDto;
 import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.services.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -42,5 +45,11 @@ public class TurnoController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<CanchaConHorariosDto>> getAvailable(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+        List<CanchaConHorariosDto> turnos = turnoService.findAvailableByDate(fecha);
+        return ResponseEntity.ok(turnos);
     }
 }
