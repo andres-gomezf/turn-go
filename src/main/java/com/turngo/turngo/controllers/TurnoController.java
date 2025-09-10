@@ -4,6 +4,7 @@ import com.turngo.turngo.dtos.CanchaConHorariosDto;
 import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.services.TurnoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> create(@RequestBody TurnoDto turno) {
+    public ResponseEntity<Turno> create(@Valid @RequestBody TurnoDto turno) {
         Turno nuevo = turnoService.save(turno);
         return ResponseEntity.status(201).body(nuevo);
     }

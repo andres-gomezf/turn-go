@@ -2,11 +2,14 @@ package com.turngo.turngo.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -43,5 +46,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTurnoNoDisponible(TurnoNoDisponibleException ex, HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+        // Concatenamos todos los mensajes de validación en uno solo
+        String mensaje = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST, mensaje);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
