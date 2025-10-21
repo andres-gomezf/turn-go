@@ -24,6 +24,10 @@ public class TurnoDto {
     @NotNull(message = "El id de la cancha no puede estar vacío. Debe tener una cancha asociada.")
     @Positive(message = "El id de la cancha debe ser mayor a 0.")
     private Long canchaId;
+    
+    // TODO: PROBLEMA IDENTIFICADO - TurnoDto incluye canchaId pero Turno no tiene relación directa con Cancha
+    // SOLUCIÓN: Eliminar canchaId del DTO ya que la relación es a través de Horario
+    // La cancha se obtiene de: horario.getCancha()
 
     @NotNull(message = "El id del horario no puede estar vacío. Debe tener un horario asociado.")
     @Positive(message = "El id del horario debe ser mayor a 0.")

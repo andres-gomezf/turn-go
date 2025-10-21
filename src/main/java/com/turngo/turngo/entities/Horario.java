@@ -23,6 +23,14 @@ public class Horario {
     @JsonIgnore
     @JoinColumn(name = "cancha_id")
     private Cancha cancha;
+    
+    // TODO: PROBLEMA IDENTIFICADO - La relación con Cancha no se está estableciendo correctamente
+    // SOLUCIÓN: Agregar constructor que reciba Cancha o método para establecer la relación
+    // Ejemplo: public Horario(Cancha cancha, LocalTime horaInicio, LocalTime horaFin) {
+    //     this.cancha = cancha;
+    //     this.horaInicio = horaInicio;
+    //     this.horaFin = horaFin;
+    // }
 
     @Column(nullable = false)
     @JsonFormat(pattern = "HH:mm")

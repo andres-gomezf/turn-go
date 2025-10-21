@@ -13,6 +13,19 @@ public class HorarioService {
 
     @Autowired
     private HorarioRepository horarioRepository;
+    
+    // TODO: PROBLEMA IDENTIFICADO - El servicio no maneja la relación con Cancha al crear horarios
+    // SOLUCIÓN: Modificar el método save para recibir CanchaService y establecer la relación
+    // Ejemplo: 
+    // @Autowired
+    // private CanchaService canchaService;
+    // 
+    // public Horario save(HorarioDto horarioDto) {
+    //     Cancha cancha = canchaService.findById(horarioDto.getCanchaId())
+    //         .orElseThrow(() -> new RuntimeException("Cancha no encontrada"));
+    //     Horario horario = new Horario(cancha, horarioDto.getHoraInicio(), horarioDto.getHoraFin());
+    //     return horarioRepository.save(horario);
+    // }
 
     public List<Horario> findAll() {
         return horarioRepository.findAll();

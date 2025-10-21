@@ -39,6 +39,9 @@ public class TurnoService {
     }
 
     public Turno save(TurnoDto turnoDto) {
+        // TODO: PROBLEMA IDENTIFICADO - El servicio usa canchaId del DTO pero no lo valida ni usa
+        // SOLUCIÓN: Eliminar la validación de canchaId del DTO o agregar validación de consistencia
+        // Ejemplo: Verificar que horario.getCancha().getId().equals(turnoDto.getCanchaId())
 
             Cliente cliente = this.clienteService.findById(turnoDto.getClienteId())
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));

@@ -30,6 +30,9 @@ public class HorarioController {
 
     @PostMapping
     public ResponseEntity<Horario> create(@RequestBody Horario horario) {
+        // TODO: PROBLEMA IDENTIFICADO - El controlador recibe Horario directamente sin validar relaciones
+        // SOLUCIÓN: Cambiar para recibir HorarioDto y usar @Valid para validaciones
+        // Ejemplo: public ResponseEntity<Horario> create(@Valid @RequestBody HorarioDto horarioDto)
         Horario nuevo = horarioService.save(horario);
         return ResponseEntity.status(201).body(nuevo);
     }
