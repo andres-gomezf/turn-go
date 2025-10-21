@@ -32,12 +32,9 @@ public class Turno implements Serializable {
     private Cliente cliente;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "horario_id")
     private Horario horario;
     
-    // TODO: PROBLEMA IDENTIFICADO - La relación con Horario no incluye @JoinColumn
-    // SOLUCIÓN: Agregar @JoinColumn(name = "horario_id") para mapear correctamente la FK
-    // También verificar que la tabla Turnos en BD tenga la columna horario_id, no cancha_id
-
     @Column(name = "fecha")
     private LocalDate fechaInicio;
 

@@ -1,7 +1,10 @@
 package com.turngo.turngo.services;
 
 import com.turngo.turngo.entities.Horario;
+import com.turngo.turngo.dtos.HorarioPostDto;
 import com.turngo.turngo.repositories.HorarioRepository;
+import com.turngo.turngo.services.CanchaService;
+import com.turngo.turngo.entities.Cancha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +16,9 @@ public class HorarioService {
 
     @Autowired
     private HorarioRepository horarioRepository;
+    @Autowired
+    private CanchaService canchaService;
     
-    // TODO: PROBLEMA IDENTIFICADO - El servicio no maneja la relación con Cancha al crear horarios
-    // SOLUCIÓN: Modificar el método save para recibir CanchaService y establecer la relación
-    // Ejemplo: 
-    // @Autowired
-    // private CanchaService canchaService;
-    // 
-    // public Horario save(HorarioDto horarioDto) {
-    //     Cancha cancha = canchaService.findById(horarioDto.getCanchaId())
-    //         .orElseThrow(() -> new RuntimeException("Cancha no encontrada"));
-    //     Horario horario = new Horario(cancha, horarioDto.getHoraInicio(), horarioDto.getHoraFin());
-    //     return horarioRepository.save(horario);
-    // }
-
     public List<Horario> findAll() {
         return horarioRepository.findAll();
     }
@@ -35,8 +27,14 @@ public class HorarioService {
         return horarioRepository.findById(id);
     }
 
-    public Horario save(Horario horario) {
-        return horarioRepository.save(horario);
+    public Horario save(HorarioPostDto horario) {
+        Cancha cancha = this.canchaService.findById(horario.getCanchaId())
+                        .orElseThrow(() -> new RuntimeException("Cancha no encontrada"));
+
+
+        Horario nuevoHorario = new Horario(cancha, horario.getHoraInicio(), horario.getHoraFin());
+
+        return horarioRepository.save(nuevoHorario);
     }
 
     public void delete(Integer id) {

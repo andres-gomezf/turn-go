@@ -2,6 +2,8 @@ package com.turngo.turngo.controllers;
 
 import com.turngo.turngo.entities.Horario;
 import com.turngo.turngo.services.HorarioService;
+import com.turngo.turngo.dtos.HorarioPostDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +31,7 @@ public class HorarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Horario> create(@RequestBody Horario horario) {
-        // TODO: PROBLEMA IDENTIFICADO - El controlador recibe Horario directamente sin validar relaciones
-        // SOLUCIÓN: Cambiar para recibir HorarioDto y usar @Valid para validaciones
-        // Ejemplo: public ResponseEntity<Horario> create(@Valid @RequestBody HorarioDto horarioDto)
+    public ResponseEntity<Horario> create(@Valid @RequestBody HorarioPostDto horario) {
         Horario nuevo = horarioService.save(horario);
         return ResponseEntity.status(201).body(nuevo);
     }
