@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class TurnoDto {
 
     @NotNull(message = "El id del cliente no puede estar vacío. Debe tener un cliente asociado.")

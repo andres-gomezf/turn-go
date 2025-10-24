@@ -2,17 +2,16 @@ package com.turngo.turngo.controllers;
 
 import com.turngo.turngo.dtos.ClienteDto;
 import com.turngo.turngo.entities.Cliente;
-import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/clientes")
 public class ClienteController {
 
@@ -40,6 +39,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> create(@Valid @RequestBody ClienteDto cliente) {
+
         Cliente nuevoCliente = clienteService.save(cliente);
         return ResponseEntity.status(201).body(nuevoCliente);
     }
