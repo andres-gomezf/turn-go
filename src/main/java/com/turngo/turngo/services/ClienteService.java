@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 @Service
 public class ClienteService {
 
@@ -49,4 +51,15 @@ public class ClienteService {
             return save(clienteDto);
         }
     }
+
+    public void assignUserId(Long id, Long userId) {
+      Optional<Cliente> clienteOpt = this.findById(id);
+
+      if (clienteOpt.isPresent()) {
+        Cliente cliente = clienteOpt.get();
+        cliente.setUserId(userId);
+        clienteRepository.save(cliente);
+    }
+
+  }
 }

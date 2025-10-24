@@ -28,6 +28,13 @@ public class Cliente implements Serializable {
         this.correo = correo;
     }
 
+    public Cliente(String nombre, String apellido, String correo, Long userId) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.userId = userId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

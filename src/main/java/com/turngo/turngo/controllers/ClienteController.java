@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 import java.util.List;
 
@@ -58,4 +59,11 @@ public class ClienteController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PostMapping("/{id}/assign-user-id")
+    public ResponseEntity<Void> assignUserId(@PathVariable Long id, @RequestBody Map<String, Long> body) {
+      Long userId = body.get("userId");
+      clienteService.assignUserId(id, userId);
+      return ResponseEntity.ok().build();
+    }
+ 
 }
