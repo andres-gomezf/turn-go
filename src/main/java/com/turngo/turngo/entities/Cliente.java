@@ -41,7 +41,7 @@ public class Cliente implements Serializable {
     @NotBlank
     private String apellido;
 
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true)
     @Basic(optional = true)
     private String correo;
 

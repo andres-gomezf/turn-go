@@ -2,7 +2,6 @@ package com.turngo.turngo.services;
 
 import com.turngo.turngo.dtos.ClienteDto;
 import com.turngo.turngo.entities.Cliente;
-import com.turngo.turngo.entities.Turno;
 import com.turngo.turngo.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +36,17 @@ public class ClienteService {
 
     public List<Cliente> findByEmail(String email) {
         return clienteRepository.findByCorreo(email);
+    }
+
+    public Cliente findOrCreateByEmail(ClienteDto clienteDto) {
+        List<Cliente> clientesExistentes = clienteRepository.findByCorreo(clienteDto.getCorreo());
+        
+        if (!clientesExistentes.isEmpty()) {
+            // Cliente ya existe, retornar el primero encontrado
+            return clientesExistentes.get(0);
+        } else {
+            // Cliente no existe, crear uno nuevo
+            return save(clienteDto);
+        }
     }
 }

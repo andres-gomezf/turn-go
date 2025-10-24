@@ -44,6 +44,12 @@ public class ClienteController {
         return ResponseEntity.status(201).body(nuevoCliente);
     }
 
+    @PostMapping("/find-or-create")
+    public ResponseEntity<Cliente> findOrCreate(@Valid @RequestBody ClienteDto cliente) {
+        Cliente clienteResult = clienteService.findOrCreateByEmail(cliente);
+        return ResponseEntity.ok(clienteResult);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (clienteService.findById(id).isPresent()) {
