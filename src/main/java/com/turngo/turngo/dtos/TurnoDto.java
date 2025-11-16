@@ -29,4 +29,7 @@ public class TurnoDto {
     @NotNull(message = "La fecha no puede estar vacía.")
     private LocalDate fecha;
 
+    // Token de captcha de Cloudflare Turnstile (no se persiste, solo para validación)
+    private String captchaToken;
+
 }

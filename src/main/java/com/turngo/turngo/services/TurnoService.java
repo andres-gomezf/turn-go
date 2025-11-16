@@ -29,6 +29,10 @@ public class TurnoService {
     private ClienteService clienteService;
     @Autowired
     private HorarioService horarioService;
+    @Autowired
+    private TurnstileService turnstileService;
+    @Autowired
+    private EmailService emailService;
 
     public List<Turno> findAll() {
         return turnoRepository.findAll();
@@ -39,6 +43,12 @@ public class TurnoService {
     }
 
     public Turno save(TurnoDto turnoDto) {
+            // Validar captcha de Cloudflare Turnstile antes de crear el turno
+            boolean captchaValido = turnstileService.validateToken(turnoDto.getCaptchaToken());
+            if (!captchaValido) {
+                throw new RuntimeException("Captcha inválido. No se puede crear el turno.");
+            }
+
             Cliente cliente = this.clienteService.findById(turnoDto.getClienteId())
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
@@ -51,7 +61,12 @@ public class TurnoService {
 
             Turno turno = new Turno(cliente, horario, turnoDto.getFecha(), EstadoReserva.RESERVADA);
 
-            return turnoRepository.save(turno);
+            Turno turnoGuardado = turnoRepository.save(turno);
+
+            // Enviar correo de confirmación (no afecta la creación del turno si falla)
+            emailService.sendTurnoConfirmation(turnoGuardado);
+
+            return turnoGuardado;
     }
 
     public void delete(Long id) {
