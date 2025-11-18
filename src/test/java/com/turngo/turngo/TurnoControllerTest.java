@@ -170,7 +170,7 @@ class TurnoControllerTest {
         turnoResponse.setFechaInicio(LocalDate.now().plusDays(4));
         turnoResponse.setEstado(EstadoReserva.PENDIENTE);
         
-        when(turnoService.save(any(TurnoDto.class))).thenReturn(turnoResponse);
+        when(turnoService.save(any(TurnoDto.class), "No")).thenReturn(turnoResponse);
 
         // When & Then
         mockMvc.perform(post("/api/v1/turnos")
@@ -180,7 +180,7 @@ class TurnoControllerTest {
                 .andExpect(jsonPath("$.id").value(3))
                 .andExpect(jsonPath("$.estado").value("PENDIENTE"));
 
-        verify(turnoService, times(1)).save(any(TurnoDto.class));
+        verify(turnoService, times(1)).save(any(TurnoDto.class), "No");
     }
 
     @Test
@@ -197,7 +197,7 @@ class TurnoControllerTest {
                         .content(objectMapper.writeValueAsString(turnoRequest)))
                 .andExpect(status().isBadRequest());
 
-        verify(turnoService, never()).save(any(TurnoDto.class));
+        verify(turnoService, never()).save(any(TurnoDto.class), "No");
     }
 
     @Test
@@ -208,7 +208,7 @@ class TurnoControllerTest {
         turnoRequest.setHorarioId(1);
         turnoRequest.setFecha(LocalDate.now().plusDays(5));
 
-        when(turnoService.save(any(TurnoDto.class)))
+        when(turnoService.save(any(TurnoDto.class), "No"))
                 .thenThrow(new RuntimeException("Cliente no encontrado"));
 
         // When & Then
@@ -217,7 +217,7 @@ class TurnoControllerTest {
                         .content(objectMapper.writeValueAsString(turnoRequest)))
                 .andExpect(status().isInternalServerError());
 
-        verify(turnoService, times(1)).save(any(TurnoDto.class));
+        verify(turnoService, times(1)).save(any(TurnoDto.class), "No");
     }
 
     @Test
@@ -228,7 +228,7 @@ class TurnoControllerTest {
         turnoRequest.setHorarioId(999); // Non-existent horario
         turnoRequest.setFecha(LocalDate.now().plusDays(6));
 
-        when(turnoService.save(any(TurnoDto.class)))
+        when(turnoService.save(any(TurnoDto.class), "No"))
                 .thenThrow(new RuntimeException("Horario no encontrado"));
 
         // When & Then
@@ -237,7 +237,7 @@ class TurnoControllerTest {
                         .content(objectMapper.writeValueAsString(turnoRequest)))
                 .andExpect(status().isInternalServerError());
 
-        verify(turnoService, times(1)).save(any(TurnoDto.class));
+        verify(turnoService, times(1)).save(any(TurnoDto.class), "No");
     }
 
     @Test

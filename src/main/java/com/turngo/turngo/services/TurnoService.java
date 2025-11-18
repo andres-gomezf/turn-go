@@ -6,6 +6,7 @@ import com.turngo.turngo.dtos.HorarioFlatDto;
 import com.turngo.turngo.dtos.TurnoDto;
 import com.turngo.turngo.entities.*;
 import com.turngo.turngo.exceptions.TurnoNoDisponibleException;
+import com.turngo.turngo.notifications.EmailNotification;
 import com.turngo.turngo.repositories.TurnoRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class TurnoService {
     private ClienteService clienteService;
     @Autowired
     private HorarioService horarioService;
+    @Autowired
+    private EmailNotification emailNotificationService;
 
     public List<Turno> findAll() {
         return turnoRepository.findAll();
@@ -38,7 +41,7 @@ public class TurnoService {
         return turnoRepository.findById(id);
     }
 
-    public Turno save(TurnoDto turnoDto) {
+    public Turno save(TurnoDto turnoDto, String emailHeader) {
             Cliente cliente = this.clienteService.findById(turnoDto.getClienteId())
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
@@ -51,7 +54,13 @@ public class TurnoService {
 
             Turno turno = new Turno(cliente, horario, turnoDto.getFecha(), EstadoReserva.RESERVADA);
 
-            return turnoRepository.save(turno);
+             Turno guardado = turnoRepository.save(turno);
+
+            if ("Yes".equalsIgnoreCase(emailHeader)) {
+                emailNotificationService.sendNotification(guardado);
+            }
+
+            return guardado;
     }
 
     public void delete(Long id) {

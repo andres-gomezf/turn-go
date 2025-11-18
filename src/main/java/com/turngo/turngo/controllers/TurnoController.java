@@ -35,8 +35,8 @@ public class TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> create(@Valid @RequestBody TurnoDto turno) {
-        Turno nuevo = turnoService.save(turno);
+    public ResponseEntity<Turno> create(@Valid @RequestBody TurnoDto turno, @RequestHeader(value = "emailNotification", required = false) String emailHeader) {
+        Turno nuevo = turnoService.save(turno, emailHeader);
         return ResponseEntity.status(201).body(nuevo);
     }
 
