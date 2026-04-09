@@ -6,18 +6,7 @@ REST API for managing sports court bookings, built with Spring Boot, JPA, and Po
 - [Architecture](#architecture)
 - [Domain Model](#domain-model)
 - [Requirements](#requirements)
-- [Environment Variables](#environment-variables)
-- [Local Setup](#local-setup)
-- [Run with Docker (Database only)](#run-with-docker-database-only)
-- [API Endpoints](#api-endpoints)
-- [Email Notifications](#email-notifications)
-- [Error Handling](#error-handling)
-- [Testing](#testing)
-- [Useful Commands](#useful-commands)
-- [Security Status](#security-status)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+
 ---
 ## Overview
 TurnGo allows you to:
